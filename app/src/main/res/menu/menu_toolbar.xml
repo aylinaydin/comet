@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- "Mark Favorite", should appear as action button if possible -->
+    <item
+        android:id="@+id/membersOfGroup"
+        android:title="@string/members"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/leave"
+        android:title="@string/leave_group"
+        app:showAsAction="never" />
+
+
+</menu>

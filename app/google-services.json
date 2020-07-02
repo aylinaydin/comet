@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "636203439591",
+    "firebase_url": "https://comet-b9e8c.firebaseio.com",
+    "project_id": "comet-b9e8c",
+    "storage_bucket": "comet-b9e8c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:636203439591:android:ca653de1cdf891a6",
+        "android_client_info": {
+          "package_name": "com.aylin.comet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "636203439591-pd4smhugg1tpcdrvmcl0cam35b5090p1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aylin.comet",
+            "certificate_hash": "6d4cd7489b523eaa39071c2e123559fca9dd8762"
+          }
+        },
+        {
+          "client_id": "636203439591-eqefb1bo8v40cq920bhlj9uoedmvtmok.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3qdtntyVE-tgyAJRs14JxH2d7Lyv91UE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "636203439591-eqefb1bo8v40cq920bhlj9uoedmvtmok.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
