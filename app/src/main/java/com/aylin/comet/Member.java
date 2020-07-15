@@ -6,16 +6,20 @@ package com.aylin.comet;
 
 public class Member {
     private String groupId;
-    public Member(String groupId){
+
+    public Member(String groupId) {
         this.groupId = groupId;
     }
-    public Member(){
+
+    public Member() {
 
     }
-    public void setUserId(){
+
+    public void setUserId() {
         this.groupId = groupId;
     }
-    public String getGroupId(){
+
+    public String getGroupId() {
         return groupId;
     }
 }

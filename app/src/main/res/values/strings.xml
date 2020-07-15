@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">COMET</string>
     <string name="log_in_">LOG-IN</string>
-    <string name="e_mail">E-mail:</string>
-    <string name="password">Password:</string>
+    <string name="e_mail">E-mail</string>
+    <string name="password">Password</string>
     <string name="register">Register</string>
     <string name="ok">OK</string>
     <string name="in_order_to_register_to_application">In order to register to application:</string>

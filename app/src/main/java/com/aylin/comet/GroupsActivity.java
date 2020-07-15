@@ -36,15 +36,12 @@ import java.util.List;
 
 public class GroupsActivity extends AppCompatActivity {
 
-    private DatabaseReference mGroupsReference,deneme;
+    private DatabaseReference mGroupsReference;
     private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private GroupAdapter adapter;
     private List<Group> mGroupsList = new ArrayList<>();
-    private Button createGroup,deleteGroup;
-    private int control = 0;
-   // private EditText groupName, groupKey;
+    // private EditText groupName, groupKey;
     final Context context = this;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_groups);
@@ -52,15 +49,14 @@ public class GroupsActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         getSupportActionBar().setTitle("GROUPS");
         mGroupsReference = FirebaseDatabase.getInstance().getReference().child("Groups");
-        deneme =  FirebaseDatabase.getInstance().getReference();
         //initialize the recyclerview variables
         mRecyclerView = findViewById(R.id.usersRecyclerView);
         mRecyclerView.setHasFixedSize(true);
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        createGroup = findViewById(R.id.createGroup);
-        deleteGroup = findViewById(R.id.delete_group);
+        Button createGroup = findViewById(R.id.createGroup);
+        Button deleteGroup = findViewById(R.id.delete_group);
         createGroup.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -83,19 +79,19 @@ public class GroupsActivity extends AppCompatActivity {
                 alertDialogBuilder
                         .setCancelable(false)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
+                            public void onClick(DialogInterface dialog, int id) {
                                 // get user input and set it to result
                                 // edit text
 
                                 String group_name = groupName.getText().toString().trim();
                                 String group_key = groupKey.getText().toString();
                                 //sendGroupToFirebase(group_name,group_key);
-                                controlUniqueGroupKey(group_name,group_key);
+                                controlUniqueGroupKey(group_name, group_key);
                             }
                         })
                         .setNegativeButton("Cancel",
                                 new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,int id) {
+                                    public void onClick(DialogInterface dialog, int id) {
                                         dialog.cancel();
                                     }
                                 });
@@ -125,7 +121,7 @@ public class GroupsActivity extends AppCompatActivity {
                 alertDialogBuilder
                         .setCancelable(false)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
+                            public void onClick(DialogInterface dialog, int id) {
                                 // get user input and set it to result
                                 // edit text
 
@@ -135,7 +131,7 @@ public class GroupsActivity extends AppCompatActivity {
                         })
                         .setNegativeButton("Cancel",
                                 new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,int id) {
+                                    public void onClick(DialogInterface dialog, int id) {
                                         dialog.cancel();
                                     }
                                 });
@@ -152,10 +148,10 @@ public class GroupsActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         /**query groups and add them to a list**/
-       // queryGroupsAndAddThemToList();
+        // queryGroupsAndAddThemToList();
     }
 
-    private void deleteFromFirebase(String groupKey){
+    private void deleteFromFirebase(String groupKey) {
         mGroupsList.clear();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Groups");
         final DatabaseReference moveRef = FirebaseDatabase.getInstance().getReference().child("Deleted Groups").push();
@@ -163,7 +159,7 @@ public class GroupsActivity extends AppCompatActivity {
         deleteQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (final DataSnapshot Snapshot: dataSnapshot.getChildren()) {
+                for (final DataSnapshot Snapshot : dataSnapshot.getChildren()) {
                     moveRef.setValue(Snapshot.getValue(), new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(DatabaseError firebaseError, DatabaseReference firebase) {
@@ -174,7 +170,7 @@ public class GroupsActivity extends AppCompatActivity {
                                 String uid = Snapshot.getKey();//group id
                                 assert currentFirebaseUser != null;
                                 String user_id = currentFirebaseUser.getUid();
-                                deleteGroupFromUser(uid,user_id);
+                                deleteGroupFromUser(uid, user_id);
                                 Snapshot.getRef().removeValue();
 
                             }
@@ -191,7 +187,7 @@ public class GroupsActivity extends AppCompatActivity {
         });
     }
 
-    private void deleteGroupFromUser(String group_id, String user_id){
+    private void deleteGroupFromUser(String group_id, String user_id) {
         //.child(user_id).child("MemberGroup")
         mGroupsList.clear();
         DatabaseReference deleteUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id).child("MemberGroup");
@@ -199,7 +195,7 @@ public class GroupsActivity extends AppCompatActivity {
         deleteMemberQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot deleteSnapshot: dataSnapshot.getChildren()) {
+                for (DataSnapshot deleteSnapshot : dataSnapshot.getChildren()) {
                     deleteSnapshot.getRef().removeValue();
                 }
             }
@@ -210,7 +206,8 @@ public class GroupsActivity extends AppCompatActivity {
             }
         });
     }
-    private void controlUniqueGroupKey(final String groupName, final String groupKey){
+
+    private void controlUniqueGroupKey(final String groupName, final String groupKey) {
         mGroupsReference.orderByChild("groupKey").equalTo(groupKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -219,7 +216,7 @@ public class GroupsActivity extends AppCompatActivity {
                     Toast.makeText(GroupsActivity.this, "This key was used!", Toast.LENGTH_SHORT).show();
                 } else {
                     // code if data does not  exists
-                    sendGroupToFirebase(groupName,groupKey);
+                    sendGroupToFirebase(groupName, groupKey);
                 }
 
             }
@@ -233,45 +230,47 @@ public class GroupsActivity extends AppCompatActivity {
     }
 
 
-    private void sendGroupToFirebase(String groupName, String groupKey){
+    private void sendGroupToFirebase(String groupName, String groupKey) {
 
-            mGroupsList.clear();
-            DatabaseReference newRef = mGroupsReference.push();
-            String uniqueId = newRef.getKey();
-            Group creatingGroup = new Group(uniqueId, groupName, groupKey);
-            newRef.setValue(creatingGroup).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (!task.isSuccessful()) {
-                        //error
-                        //set invisible layout
-                        //setContentView(R.layout.activity_chat_groups);
-                        Toast.makeText(GroupsActivity.this, "Error " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                    } else {
+        mGroupsList.clear();
+        DatabaseReference newRef = mGroupsReference.push();
+        String uniqueId = newRef.getKey();
+        Group creatingGroup = new Group(uniqueId, groupName, groupKey);
+        newRef.setValue(creatingGroup).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (!task.isSuccessful()) {
+                    //error
+                    //set invisible layout
+                    //setContentView(R.layout.activity_chat_groups);
+                    Toast.makeText(GroupsActivity.this, "Error " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                } else {
 
-                        Toast.makeText(GroupsActivity.this, "Group created successfully!", Toast.LENGTH_SHORT).show();
-                        //queryGroupsAndAddThemToList();
-                    }
+                    Toast.makeText(GroupsActivity.this, "Group created successfully!", Toast.LENGTH_SHORT).show();
+                    //queryGroupsAndAddThemToList();
                 }
-            });
+            }
+        });
 
 
     }
-    private void populateRecyclerView(){
-        adapter = new GroupAdapter(mGroupsList, this);
+
+    private void populateRecyclerView() {
+        GroupAdapter adapter = new GroupAdapter(mGroupsList, this);
         mRecyclerView.setAdapter(adapter);
 
     }
-    private void queryGroupsAndAddThemToList(){
+
+    private void queryGroupsAndAddThemToList() {
         mGroupsReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //if(dataSnapshot.getChildrenCount() > 0){
-                    for(DataSnapshot snap: dataSnapshot.getChildren()){
-                        Group group = snap.getValue(Group.class);
-                        mGroupsList.add(group);
+                for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                    Group group = snap.getValue(Group.class);
+                    mGroupsList.add(group);
 
-                    }
+                }
 
                 //}
                 populateRecyclerView();
@@ -283,7 +282,6 @@ public class GroupsActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
 }

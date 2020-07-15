@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:text="Logout"/>
+            android:text="Logout" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
@@ -42,7 +42,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@id/header"
-        tools:listitem="@android:layout/two_line_list_item"/>
+        tools:listitem="@android:layout/two_line_list_item" />
 
     <LinearLayout
         android:id="@+id/footer"

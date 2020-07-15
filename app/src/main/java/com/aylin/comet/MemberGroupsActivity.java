@@ -3,7 +3,6 @@ package com.aylin.comet;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -39,15 +38,15 @@ import java.util.Map;
 
 public class MemberGroupsActivity extends AppCompatActivity {
 
-    private DatabaseReference mGroupsReference, UserReference, mUsersReference, deneme,deneme2, UserNewReference, GroupNewReference;
+    private DatabaseReference mGroupsReference;
+    private DatabaseReference UserNewReference;
+    private DatabaseReference GroupNewReference;
     private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private GroupAdapter adapter;
     private List<Group> mGroupsList = new ArrayList<>();
-    private Button memberGroup;
     private String group_key;
     // private EditText groupName, groupKey;
     final Context context = this;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member_groups);
@@ -55,21 +54,21 @@ public class MemberGroupsActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         getSupportActionBar().setTitle("GROUPS");
         //getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.cardview_shadow_end_color)));
-        mUsersReference = FirebaseDatabase.getInstance().getReference().child("Users");
-        deneme =  FirebaseDatabase.getInstance().getReference();
-        deneme2 =  FirebaseDatabase.getInstance().getReference();
-        UserNewReference =  FirebaseDatabase.getInstance().getReference().child("Users");
+        DatabaseReference mUsersReference = FirebaseDatabase.getInstance().getReference().child("Users");
+        DatabaseReference deneme = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference deneme2 = FirebaseDatabase.getInstance().getReference();
+        UserNewReference = FirebaseDatabase.getInstance().getReference().child("Users");
         mGroupsReference = FirebaseDatabase.getInstance().getReference().child("Groups");
         GroupNewReference = FirebaseDatabase.getInstance().getReference().child("Groups");
         //mUsersReference = FirebaseDatabase.getInstance().getReference().child("Users");
         //initialize the recyclerview variables
-        mRecyclerView = (RecyclerView)findViewById(R.id.memberUsersRecyclerView);
+        mRecyclerView = (RecyclerView) findViewById(R.id.memberUsersRecyclerView);
         mRecyclerView.setHasFixedSize(true);
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         //queryGroupsAndAddThemToList();
-        memberGroup = findViewById(R.id.member_group_button);
+        Button memberGroup = findViewById(R.id.member_group_button);
 
         memberGroup.setOnClickListener(new View.OnClickListener() {
 
@@ -86,7 +85,7 @@ public class MemberGroupsActivity extends AppCompatActivity {
                 // set prompts.xml to alertdialog builder
                 alertDialogBuilder.setView(promptsView);
 
-                final EditText groupKey =  promptsView
+                final EditText groupKey = promptsView
                         .findViewById(R.id.group_member_key);
                 alertDialogBuilder.setCancelable(false);
                 alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -99,7 +98,7 @@ public class MemberGroupsActivity extends AppCompatActivity {
                         mGroupsReference.orderByChild("groupKey").equalTo(group_key).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (DataSnapshot snap: dataSnapshot.getChildren()) {
+                                for (DataSnapshot snap : dataSnapshot.getChildren()) {
                                     if (snap.exists()) {
                                         String name = snap.child("groupName").getValue(String.class);
                                         //deneme.child("deneme").push().setValue(name);
@@ -140,21 +139,19 @@ public class MemberGroupsActivity extends AppCompatActivity {
                                 dialog.cancel();
                             }
                         });
-                // create alert dialog
-                AlertDialog alertDialog = alertDialogBuilder.create(); // show it
+                AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
             }
         });
         queryGroupsAndAddThemToList();
 
     }
+
     protected void onStart() {
         super.onStart();
-        /**query groups and add them to a list**/
-     // queryGroupsAndAddThemToList();
-
     }
-    private void registerToGroupFirebase(String groupKey){
+
+    private void registerToGroupFirebase(String groupKey) {
         mGroupsList.clear();
         //registering to group
         final ChildEventListener childEventListener = mGroupsReference.orderByChild("groupKey").equalTo(groupKey).addChildEventListener(new ChildEventListener() {
@@ -165,10 +162,9 @@ public class MemberGroupsActivity extends AppCompatActivity {
                 assert currentFirebaseUser != null;
                 String user_id = currentFirebaseUser.getUid();
                 Map<String, String> mapMember = new HashMap<>();
-                mapMember.put("User Id",user_id);
+                mapMember.put("User Id", user_id);
                 mGroupsReference.child(uid).child("Members").push().setValue(mapMember);
-                savingUserGroup(uid,user_id);
-
+                savingUserGroup(uid, user_id);
             }
 
             @Override
@@ -190,40 +186,33 @@ public class MemberGroupsActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-
         });
-
     }
-    private void savingUserGroup(String groupId, String userId){
+
+    private void savingUserGroup(String groupId, String userId) {
         Map<String, String> mapGroup = new HashMap<>();
-        mapGroup.put("Group Id",groupId);
-        UserReference = FirebaseDatabase.getInstance().getReference().child("Users");
-        UserReference.child(userId).child("MemberGroup").push().setValue(mapGroup).addOnCompleteListener(new OnCompleteListener<Void>() {
+        mapGroup.put("Group Id", groupId);
+        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("Users");
+        userReference.child(userId).child("MemberGroup").push().setValue(mapGroup).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if(!task.isSuccessful()){
-                    //error
-                    //set invisible layout
-                    //setContentView(R.layout.activity_chat_groups);
+                if (!task.isSuccessful()) {
                     Toast.makeText(MemberGroupsActivity.this, "Error " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                }else{
-
+                } else {
                     Toast.makeText(MemberGroupsActivity.this, "You have entered the group!", Toast.LENGTH_SHORT).show();
-                    //queryGroupsAndAddThemToList();
                 }
             }
         });
 
     }
-    private void populateRecyclerView(){
-        adapter = new GroupAdapter(mGroupsList, this);
+
+    private void populateRecyclerView() {
+        GroupAdapter adapter = new GroupAdapter(mGroupsList, this);
         mRecyclerView.setAdapter(adapter);
 
     }
 
     private void queryGroupsAndAddThemToList() {
-
-
         FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         assert currentFirebaseUser != null;
         String user_id = currentFirebaseUser.getUid();
@@ -245,9 +234,6 @@ public class MemberGroupsActivity extends AppCompatActivity {
                                     mGroupsList.add(group);
                                     populateRecyclerView();
                                 }
-
-
-                              //  }
                             }
 
                             @Override
@@ -255,12 +241,8 @@ public class MemberGroupsActivity extends AppCompatActivity {
                                 throw databaseError.toException();
                             }
                         });
-
                     }
                 }
-                //populateRecyclerView();
-
-
             }
 
             @Override
@@ -268,10 +250,5 @@ public class MemberGroupsActivity extends AppCompatActivity {
                 throw databaseError.toException();
             }
         });
-
-
     }
-
-
-
 }

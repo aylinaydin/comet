@@ -10,12 +10,13 @@ public class Group {
     private String groupKey;
     private Member member;
 
-    public Group(String groupId,String groupName, String groupKey){
+    public Group(String groupId, String groupName, String groupKey) {
         this.groupId = groupId;
         this.groupName = groupName;
         this.groupKey = groupKey;
     }
-    public Group(){
+
+    public Group() {
 
     }
 
