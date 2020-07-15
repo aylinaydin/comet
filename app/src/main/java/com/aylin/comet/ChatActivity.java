@@ -1,17 +1,17 @@
 package com.aylin.comet;
+
 import android.annotation.SuppressLint;
-import android.os.CountDownTimer;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
@@ -22,6 +22,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,7 +36,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -51,7 +51,8 @@ import java.util.concurrent.TimeUnit;
  * Created by Aylin on 13.03.2018.
  */
 
-public class ChatActivity extends AppCompatActivity{
+public class ChatActivity extends AppCompatActivity {
+    private static final int GALLERY_PICK = 1;
     private RecyclerView mChatsRecyclerView;
     private EditText mMessageEditText;
     private ImageButton mSendImageButton, galleryImageButton;
@@ -62,9 +63,8 @@ public class ChatActivity extends AppCompatActivity{
     private MessagesAdapter adapter = null;
     private String groupId;
     private String groupName;
-    private String senderId,senderIdForTest;
+    private String senderId, senderIdForTest;
     private String message;
-    private static final int GALLERY_PICK=1;
     private FirebaseStorage storage;
     private StorageReference imageStorageRef;
     private FirebaseApp app;
@@ -76,8 +76,8 @@ public class ChatActivity extends AppCompatActivity{
         //groupId = getIntent().getStringExtra("GROUP_ID");
 
         Bundle extras = getIntent().getExtras();
-        if(extras == null) {
-            Log.e("groupID is null","NULL GROUP İD");
+        if (extras == null) {
+            Log.e("groupID is null", "NULL GROUP İD");
         } else {
             groupId = extras.getString("GROUP_ID");
         }
@@ -90,13 +90,13 @@ public class ChatActivity extends AppCompatActivity{
         //Add to Activity
 
         mChatsRecyclerView = findViewById(R.id.messagesRecyclerView);
-        mMessageEditText =  findViewById(R.id.messageEditText);
+        mMessageEditText = findViewById(R.id.messageEditText);
         mSendImageButton = findViewById(R.id.sendMessageImagebutton);
         galleryImageButton = findViewById(R.id.galleryImageButton);
         mChatsRecyclerView.setHasFixedSize(true);
         //get group id from intent
 
-        deneme =  FirebaseDatabase.getInstance().getReference();
+        deneme = FirebaseDatabase.getInstance().getReference();
         /*gDatabase = FirebaseDatabase.getInstance().getReference();
         gDatabase.child("idOfGroup").push().setValue(groupId);*/
         //use a linear layout manager
@@ -104,7 +104,7 @@ public class ChatActivity extends AppCompatActivity{
         mLayoutManager.setStackFromEnd(true);
         mChatsRecyclerView.setLayoutManager(mLayoutManager);
         //init Firebase
-        if(groupId!=null) {
+        if (groupId != null) {
             mMessagesDBRef = FirebaseDatabase.getInstance().getReference().child("Messages").child(groupId);
         }
         mUsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -117,14 +117,14 @@ public class ChatActivity extends AppCompatActivity{
                 // galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
                 galleryIntent.setType("image/jpeg");
                 galleryIntent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                startActivityForResult(Intent.createChooser(galleryIntent,"SELECT IMAGE"),GALLERY_PICK);
+                startActivityForResult(Intent.createChooser(galleryIntent, "SELECT IMAGE"), GALLERY_PICK);
 
             }
         });
         // Get the Firebase app and all primitives we'll use
         app = FirebaseApp.getInstance();
         storage = FirebaseStorage.getInstance(app);
-        if(FirebaseAuth.getInstance().getCurrentUser()!=null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             senderIdForTest = FirebaseAuth.getInstance().getCurrentUser().getUid();
         }
         mSendImageButton.setOnClickListener(new View.OnClickListener() {
@@ -140,13 +140,13 @@ public class ChatActivity extends AppCompatActivity{
                 String messageTime = df.format(today);
                 String testMessageTime = "message time: " + millisecond;
                 deneme.child("Time").push().setValue(testMessageTime);
-                if(FirebaseAuth.getInstance().getCurrentUser()!=null) {
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                     senderId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 }
                 if (message.isEmpty()) {
                     Toast.makeText(ChatActivity.this, "You must enter a message", Toast.LENGTH_SHORT).show();
                 } else {
-                            sendMessageToFirebase(message, senderId, groupName, messageTime);
+                    sendMessageToFirebase(message, senderId, groupName, messageTime);
                 }
             }
         });
@@ -154,16 +154,17 @@ public class ChatActivity extends AppCompatActivity{
 
         //testCode_();
     }
-    public void testCode(){
+
+    public void testCode() {
         int count = 0;
-        while(count<3){
+        while (count < 3) {
             count++;
             String test = "deneme";
             queryMessagesAndAddThemToList();
             SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
             Date today = Calendar.getInstance().getTime();
             String messageTimeForTest = df.format(today);
-            sendMessageToFirebase(test, senderIdForTest,groupName,messageTimeForTest);
+            sendMessageToFirebase(test, senderIdForTest, groupName, messageTimeForTest);
             try {
                 TimeUnit.SECONDS.sleep(5);
             } catch (InterruptedException e) {
@@ -172,23 +173,24 @@ public class ChatActivity extends AppCompatActivity{
 
         }
     }
-    public void testCode_(){
+
+    public void testCode_() {
         final int[] count = {0};
-        mSendImageButton.post(new Runnable(){
+        mSendImageButton.post(new Runnable() {
             @Override
             public void run() {
                 final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            // Do something after 5s = 5000ms
-                            mSendImageButton.performClick();
-                            if(count[0] <5) {
-                                handler.postDelayed(this, 5000);
-                                count[0] +=1;
-                            }
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Do something after 5s = 5000ms
+                        mSendImageButton.performClick();
+                        if (count[0] < 5) {
+                            handler.postDelayed(this, 5000);
+                            count[0] += 1;
                         }
-                    }, 5000);
+                    }
+                }, 5000);
                    /* new CountDownTimer(3000, 1000) {
 
                         public void onTick(long millisUntilFinished) {
@@ -210,17 +212,20 @@ public class ChatActivity extends AppCompatActivity{
             }
         });
     }
+
     protected void onStart() {
         super.onStart();
 
     }
-    public boolean onCreateOptionsMenu(Menu menu){
+
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_toolbar,menu);
+        inflater.inflate(R.menu.menu_toolbar, menu);
         return super.onCreateOptionsMenu(menu);
     }
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.leave:
                 deleteMemberFromUserMemberList();
                 deleteMemberFromGroupMemberList();
@@ -234,16 +239,16 @@ public class ChatActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
-    private void deleteMemberFromUserMemberList(){
+    private void deleteMemberFromUserMemberList() {
         FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         assert currentFirebaseUser != null;
         String user_id = currentFirebaseUser.getUid();
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id).child("MemberGroup");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id).child("MemberGroup");
         Query deleteQuery = ref.orderByChild("Group Id").equalTo(groupId);
         deleteQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot Snapshot: dataSnapshot.getChildren()) {
+                for (DataSnapshot Snapshot : dataSnapshot.getChildren()) {
                     //deneme.child("deletedId").push().setValue(uid);
                     Snapshot.getRef().removeValue();
                 }
@@ -255,7 +260,8 @@ public class ChatActivity extends AppCompatActivity{
             }
         });
     }
-    private void deleteMemberFromGroupMemberList(){
+
+    private void deleteMemberFromGroupMemberList() {
         FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         assert currentFirebaseUser != null;
         String user_id = currentFirebaseUser.getUid();
@@ -265,13 +271,13 @@ public class ChatActivity extends AppCompatActivity{
         deleteQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot Snapshot: dataSnapshot.getChildren()) {
+                for (DataSnapshot Snapshot : dataSnapshot.getChildren()) {
                     //deneme.child("deletedId").push().setValue(uid);
                     Snapshot.getRef().removeValue();
                     assert email != null;
-                    if(email.equals("aylin.aydin1@std.yeditepe.edu.tr")) {
+                    if (email.equals("aylin.aydin1@std.yeditepe.edu.tr")) {
                         startActivity(new Intent(ChatActivity.this, GroupsActivity.class));
-                    }else{
+                    } else {
                         startActivity(new Intent(ChatActivity.this, MemberGroupsActivity.class));
                     }
                 }
@@ -283,9 +289,10 @@ public class ChatActivity extends AppCompatActivity{
             }
         });
     }
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
-        if(requestCode == GALLERY_PICK && resultCode == RESULT_OK ){
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GALLERY_PICK && resultCode == RESULT_OK) {
             Uri imageUri = data.getData();
             senderId = FirebaseAuth.getInstance().getCurrentUser().getUid();
             final DatabaseReference imageReference = mMessagesDBRef.push();
@@ -293,7 +300,7 @@ public class ChatActivity extends AppCompatActivity{
             // Get a reference to the location where we'll store our photos
             imageStorageRef = storage.getReference("chat_photos");
             // Get a reference to store file at chat_photos/<FILENAME>
-            if(imageUri!=null) {
+            if (imageUri != null) {
                 final StorageReference photoRef = imageStorageRef.child(imageUri.getLastPathSegment());
                 photoRef.putFile(imageUri)
                         .addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -305,7 +312,6 @@ public class ChatActivity extends AppCompatActivity{
                                 assert downloadUrl != null;
                                 mMessageEditText.setText(downloadUrl.toString());
                                 String download_url = downloadUrl.toString();
-
 
 
                             }
@@ -347,17 +353,18 @@ public class ChatActivity extends AppCompatActivity{
         }
 
     }
-    private void sendMessageToFirebase(String message, String senderId, String groupName, String messageTime){
+
+    private void sendMessageToFirebase(String message, String senderId, String groupName, String messageTime) {
         mMessagesList.clear();
-        UserMessage newMsg = new UserMessage(message, senderId,groupName,messageTime);
+        UserMessage newMsg = new UserMessage(message, senderId, groupName, messageTime);
         mMessagesDBRef.push().setValue(newMsg).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if(!task.isSuccessful()){
+                if (!task.isSuccessful()) {
                     //error
-                   // FirebaseMessaging.getInstance().subscribeToTopic("pushNotifications");
+                    // FirebaseMessaging.getInstance().subscribeToTopic("pushNotifications");
                     Toast.makeText(ChatActivity.this, "Error " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     Toast.makeText(ChatActivity.this, "Message sent successfully!", Toast.LENGTH_SHORT).show();
                     mMessageEditText.setText(null);
                     //hideSoftKeyboard();
@@ -367,30 +374,32 @@ public class ChatActivity extends AppCompatActivity{
 
 
     }
+
     public void hideSoftKeyboard() {
-        if(getCurrentFocus()!=null) {
+        if (getCurrentFocus() != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
     }
-    private void queryMessagesAndAddThemToList(){
+
+    private void queryMessagesAndAddThemToList() {
         mMessagesDBRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                    mMessagesList.clear();
+                mMessagesList.clear();
                 SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss.SSS");
                 Date today = Calendar.getInstance().getTime();
                 long millisecond = today.getTime();
-                String messageTimeForTest ="end of querying data "+ millisecond;
+                String messageTimeForTest = "end of querying data " + millisecond;
                 deneme.child("Time").push().setValue(messageTimeForTest);
 
                 for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                        UserMessage chatMessage = snap.getValue(UserMessage.class);
-                        //if(chatMessage.getSenderId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) ){
-                        mMessagesList.add(chatMessage);
+                    UserMessage chatMessage = snap.getValue(UserMessage.class);
+                    //if(chatMessage.getSenderId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) ){
+                    mMessagesList.add(chatMessage);
 
-                        //}
-                    }
+                    //}
+                }
                 //populate messages
                 populateMessagesRecyclerView();
 
@@ -403,13 +412,13 @@ public class ChatActivity extends AppCompatActivity{
             }
         });
     }
-    private void populateMessagesRecyclerView(){
+
+    private void populateMessagesRecyclerView() {
         adapter = new MessagesAdapter(mMessagesList, this);
         mChatsRecyclerView.setAdapter(adapter);
 
 
     }
-
 
 
 }

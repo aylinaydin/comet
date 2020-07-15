@@ -23,21 +23,22 @@ import java.util.List;
  */
 
 public class MemberListActivity extends AppCompatActivity {
+    // private EditText groupName, groupKey;
+    final Context context = this;
     private DatabaseReference UsersReference, GroupsReference, testReference;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private MemberAdapter adapter;
     private List<User> mUserlist = new ArrayList<>();
     private String groupId;
-    private Button createGroup,deleteGroup;
+    private Button createGroup, deleteGroup;
     private int control = 0;
-    // private EditText groupName, groupKey;
-    final Context context = this;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle extras = getIntent().getExtras();
-        if(extras == null) {
-            Log.e("groupID is null","NULL GROUP İD");
+        if (extras == null) {
+            Log.e("groupID is null", "NULL GROUP İD");
         } else {
             groupId = extras.getString("GROUP_ID");
         }
@@ -55,46 +56,49 @@ public class MemberListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         queryMemberListAndAddThemToList();
     }
+
     protected void onStart() {
         super.onStart();
         /**query groups and add them to a list**/
         // queryGroupsAndAddThemToList();
     }
-    private void populateRecyclerView(){
+
+    private void populateRecyclerView() {
         adapter = new MemberAdapter(mUserlist, this);
         recyclerView.setAdapter(adapter);
 
     }
-    private void queryMemberListAndAddThemToList(){
-       final ValueEventListener valueEventListener = GroupsReference.child("Members").addValueEventListener(new ValueEventListener() {
-           @Override
-           public void onDataChange(DataSnapshot dataSnapshot) {
-               for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                   String user_id = (String) snap.child("User Id").getValue();
-                   if(user_id!=null){
-                       UsersReference.child(user_id).addListenerForSingleValueEvent(new ValueEventListener() {
-                           @Override
-                           public void onDataChange(DataSnapshot dataSnapshot) {
-                               User user = dataSnapshot.getValue(User.class);
 
-                               mUserlist.add(user);
-                               populateRecyclerView();
-                           }
+    private void queryMemberListAndAddThemToList() {
+        final ValueEventListener valueEventListener = GroupsReference.child("Members").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                    String user_id = (String) snap.child("User Id").getValue();
+                    if (user_id != null) {
+                        UsersReference.child(user_id).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                User user = dataSnapshot.getValue(User.class);
 
-                           @Override
-                           public void onCancelled(DatabaseError databaseError) {
+                                mUserlist.add(user);
+                                populateRecyclerView();
+                            }
 
-                           }
-                       });
-                   }
-               }
-           }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-           @Override
-           public void onCancelled(DatabaseError databaseError) {
+                            }
+                        });
+                    }
+                }
+            }
 
-           }
-       });
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 

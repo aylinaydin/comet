@@ -55,72 +55,71 @@ public class SignActivity extends Activity {
                     return;
                 }
                 if (TextUtils.isEmpty(password)) {
-                   Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
-                   return;
+                    Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+                    return;
                 }
-                if(TextUtils.isEmpty(username)){
+                if (TextUtils.isEmpty(username)) {
                     Toast.makeText(getApplicationContext(), "Enter username!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(domain.equals("std.yeditepe.edu.tr")||domain.equals("cse.yeditepe.edu.tr")){//Users from yeditepe
-                auth = FirebaseAuth.getInstance();
-                auth.createUserWithEmailAndPassword(email,password)//creating user with email and password
-                        .addOnCompleteListener(SignActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                Toast.makeText(SignActivity.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
+                if (domain.equals("std.yeditepe.edu.tr") || domain.equals("cse.yeditepe.edu.tr")) {//Users from yeditepe
+                    auth = FirebaseAuth.getInstance();
+                    auth.createUserWithEmailAndPassword(email, password)//creating user with email and password
+                            .addOnCompleteListener(SignActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    Toast.makeText(SignActivity.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
 
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
-                                if (!task.isSuccessful()) {//unsuccessful registration
-                                    Log.d(TAG, "signInWithEmail:unsuccessfull");
-                                    Toast.makeText(SignActivity.this, "Authentication failed." + task.getException(),
-                                            Toast.LENGTH_SHORT).show();
+                                    // If sign in fails, display a message to the user. If sign in succeeds
+                                    // the auth state listener will be notified and logic to handle the
+                                    // signed in user can be handled in the listener.
+                                    if (!task.isSuccessful()) {//unsuccessful registration
+                                        Log.d(TAG, "signInWithEmail:unsuccessfull");
+                                        Toast.makeText(SignActivity.this, "Authentication failed." + task.getException(),
+                                                Toast.LENGTH_SHORT).show();
 
-                                }else {//successful registration
-                                    Log.d(TAG, "signInWithEmail:successful");
-                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                            .setDisplayName(username).build();
-                                    final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                    assert user != null;
-                                    user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful()){
-                                                createUserInDb(user.getUid(), user.getDisplayName(),user.getEmail());
-                                            }else{
-                                                Toast.makeText(SignActivity.this, "Error " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                    } else {//successful registration
+                                        Log.d(TAG, "signInWithEmail:successful");
+                                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                .setDisplayName(username).build();
+                                        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                        assert user != null;
+                                        user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    createUserInDb(user.getUid(), user.getDisplayName(), user.getEmail());
+                                                } else {
+                                                    Toast.makeText(SignActivity.this, "Error " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
 
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
 
-                                    user.sendEmailVerification().addOnCompleteListener(SignActivity.this, new  OnCompleteListener(){
+                                        user.sendEmailVerification().addOnCompleteListener(SignActivity.this, new OnCompleteListener() {
 
-                                        @Override
-                                        public void onComplete(@NonNull Task task) {
-                                            if (task.isSuccessful()) {//verification mail has been sent
-                                                Toast.makeText(SignActivity.this,
-                                                        "Verification email sent to " + user.getEmail(),
-                                                        Toast.LENGTH_SHORT).show();
-
+                                            @Override
+                                            public void onComplete(@NonNull Task task) {
+                                                if (task.isSuccessful()) {//verification mail has been sent
+                                                    Toast.makeText(SignActivity.this,
+                                                            "Verification email sent to " + user.getEmail(),
+                                                            Toast.LENGTH_SHORT).show();
 
 
-                                            } else {//verification mail not send
-                                                Log.e(TAG, "sendEmailVerification", task.getException());
-                                                Toast.makeText(SignActivity.this,
-                                                        "Failed to send verification email.",
-                                                        Toast.LENGTH_SHORT).show();
+                                                } else {//verification mail not send
+                                                    Log.e(TAG, "sendEmailVerification", task.getException());
+                                                    Toast.makeText(SignActivity.this,
+                                                            "Failed to send verification email.",
+                                                            Toast.LENGTH_SHORT).show();
+                                                }
                                             }
-                                        }
-                                    });
-                                    finish();
+                                        });
+                                        finish();
+                                    }
                                 }
-                            }
-                        });}
-                        else{//e-mail does not belong to Yeditepe
-                            Toast.makeText(SignActivity.this, "Only with mail of Yeditepe University", Toast.LENGTH_SHORT).show();
+                            });
+                } else {//e-mail does not belong to Yeditepe
+                    Toast.makeText(SignActivity.this, "Only with mail of Yeditepe University", Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -128,16 +127,17 @@ public class SignActivity extends Activity {
         });
 
     }
-    private void createUserInDb(String userId, String displayName, String email){
+
+    private void createUserInDb(String userId, String displayName, String email) {
         mUsersDBref = FirebaseDatabase.getInstance().getReference().child("Users");
         User user = new User(userId, displayName, email);
         mUsersDBref.child(userId).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if(!task.isSuccessful()){
+                if (!task.isSuccessful()) {
                     //error
                     Toast.makeText(SignActivity.this, "Error " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     //success adding user to db as well
                     //go to users chat list
                     //goToChartUsersActivity();
@@ -147,11 +147,13 @@ public class SignActivity extends Activity {
 
 
     }
-    private void goToChartUsersActivity(){
-        Intent intent = new Intent( new Intent(SignActivity.this, MainActivity.class));
+
+    private void goToChartUsersActivity() {
+        Intent intent = new Intent(new Intent(SignActivity.this, MainActivity.class));
         startActivity(intent);
         finish();
     }
+
     protected void onStart() {
 
         super.onStart();
