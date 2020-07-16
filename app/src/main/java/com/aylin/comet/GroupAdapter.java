@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -19,35 +18,28 @@ import java.util.List;
  * Created by Aylin on 27.03.2018.
  */
 
-public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder>{
-    private List<Group>mGroupsList;
+public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> {
+    private List<Group> mGroupsList;
     private Context mContext;
     private DatabaseReference denemeGroupId;
     private String input;
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView groupNameTxtV;
-        public View layout;
-        public ViewHolder(View itemView) {
-            super(itemView);
-            layout = itemView;
-            groupNameTxtV = itemView.findViewById(R.id.groupName);
-        }
-    }
-    public void add(int position, Group group){
-        mGroupsList.add(position, group);
-        notifyItemInserted(position);
-    }
-    public void remove(int position){
-        mGroupsList.remove(position);
-        notifyItemRemoved(position);
-    }
 
     public GroupAdapter(List<Group> myDataset, Context context) {
         mGroupsList = myDataset;
         mContext = context;
 
     }
+
+    public void add(int position, Group group) {
+        mGroupsList.add(position, group);
+        notifyItemInserted(position);
+    }
+
+    public void remove(int position) {
+        mGroupsList.remove(position);
+        notifyItemRemoved(position);
+    }
+
     @Override
     public GroupAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
@@ -66,33 +58,45 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder>{
         final Group group = mGroupsList.get(position);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         assert user != null;
-        String email =user.getEmail();
+        String email = user.getEmail();
         assert email != null;
-        if(email.equals("aylin.aydin1@std.yeditepe.edu.tr")) {
+        if (email.equals("aylin.aydin1@std.yeditepe.edu.tr")) {
             input = group.getGroupName() + "\n Key:" + group.getGroupKey();
-        }else{
+        } else {
             input = group.getGroupName();
         }
         holder.groupNameTxtV.setText(input);
-       // holder.groupNameTxtV.setText(group.getGroupName());
+        // holder.groupNameTxtV.setText(group.getGroupName());
         //listen to single view layout click
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //send this user id to chat messages activity
-                goToUpdateActivity(group.getGroupId(),group.getGroupName());
+                goToUpdateActivity(group.getGroupId(), group.getGroupName());
             }
         });
     }
-    private void goToUpdateActivity(String groupId, String groupName){
+
+    private void goToUpdateActivity(String groupId, String groupName) {
         Intent goToUpdate = new Intent(mContext, ChatActivity.class);
         goToUpdate.putExtra("GROUP_ID", groupId);
-        goToUpdate.putExtra("GROUP_NAME",groupName);
+        goToUpdate.putExtra("GROUP_NAME", groupName);
         mContext.startActivity(goToUpdate);
     }
 
     @Override
     public int getItemCount() {
         return mGroupsList.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView groupNameTxtV;
+        public View layout;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            layout = itemView;
+            groupNameTxtV = itemView.findViewById(R.id.groupName);
+        }
     }
 }

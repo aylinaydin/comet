@@ -4,19 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.ui.database.FirebaseListAdapter;
-import com.firebase.ui.database.FirebaseListOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,10 +28,10 @@ import static com.aylin.comet.R.layout.activity_login;
  * Created by Aylin on 22.02.2018.
  */
 
-public class MainActivity extends Activity{
+public class MainActivity extends Activity {
     private DatabaseReference mDatabase;
     private FirebaseAuth auth;
-   //private FirebaseListAdapter<UserMessage> adapter;
+    //private FirebaseListAdapter<UserMessage> adapter;
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -65,31 +59,32 @@ public class MainActivity extends Activity{
 
 
     }
-    public void checkGoogleServices(){
-        GoogleApiAvailability googleApiAvailability =  GoogleApiAvailability.getInstance();
+
+    public void checkGoogleServices() {
+        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
         int availability = googleApiAvailability.isGooglePlayServicesAvailable(this);
-        if(availability != ConnectionResult.SUCCESS)
-        {
+        if (availability != ConnectionResult.SUCCESS) {
             googleApiAvailability.makeGooglePlayServicesAvailable(this);
         }
     }
+
     protected void onStart() {
         super.onStart();
         //adapter.startListening();
         Button sign_button = findViewById(R.id.signup_button);
-        sign_button.setOnClickListener(new View.OnClickListener(){
+        sign_button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent( new Intent(MainActivity.this, SignActivity.class));
+                Intent intent = new Intent(new Intent(MainActivity.this, SignActivity.class));
                 startActivity(intent);
 
             }
         });
-        Button login_button =  findViewById(R.id.login_ok_button);
-        final EditText email_editText =  findViewById(R.id.editText2);//
+        Button login_button = findViewById(R.id.login_ok_button);
+        final EditText email_editText = findViewById(R.id.editText2);//
         final EditText password_editText = findViewById(R.id.editText3);
-        login_button.setOnClickListener(new View.OnClickListener(){
+        login_button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -111,19 +106,19 @@ public class MainActivity extends Activity{
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             assert user != null;
-                            if(user.isEmailVerified()){
+                            if (user.isEmailVerified()) {
 
                                 Log.d(TAG, "signInWithEmail:success");
 
                                 Toast.makeText(MainActivity.this, "Authentication success.",
                                         Toast.LENGTH_SHORT).show();
-                               // displayChatMessages();
+                                // displayChatMessages();
                                 if (email.equals("aylin.aydin1@std.yeditepe.edu.tr")) {
                                     startActivity(new Intent(MainActivity.this, GroupsActivity.class));
-                                }else{
+                                } else {
                                     startActivity(new Intent(MainActivity.this, MemberGroupsActivity.class));
                                 }
-                            }else{
+                            } else {
                                 FirebaseAuth.getInstance().signOut();
                             }
 
@@ -147,7 +142,7 @@ public class MainActivity extends Activity{
             @Override
             public void onClick(View view) {
                 final String email = email_editText.getText().toString().trim();
-                if(TextUtils.isEmpty(email)){
+                if (TextUtils.isEmpty(email)) {
                     Toast.makeText(MainActivity.this, "Enter email address!", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -159,7 +154,7 @@ public class MainActivity extends Activity{
                                 if (task.isSuccessful()) {
                                     Log.d(TAG, "E-mail sent.");
                                     Toast.makeText(MainActivity.this, "Reset password e-mail is sent!", Toast.LENGTH_SHORT).show();
-                                }else{
+                                } else {
                                     Toast.makeText(MainActivity.this, "Failed to reset password", Toast.LENGTH_SHORT).show();
                                 }
                             }

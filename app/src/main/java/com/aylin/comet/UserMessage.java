@@ -1,8 +1,5 @@
 package com.aylin.comet;
 
-import java.util.Calendar;
-import java.util.Date;
-
 /**
  * Created by Aylin on 12.03.2018.
  */
@@ -19,36 +16,44 @@ public class UserMessage {
     //private long messageTime;
 
 
-    public UserMessage(String message,String senderId, String groupName, String messageTime){
-        this.message=message;
-        this.senderId=senderId;
+    public UserMessage(String message, String senderId, String groupName, String messageTime) {
+        this.message = message;
+        this.senderId = senderId;
         this.messageTime = messageTime;
         this.groupName = groupName;
 
     }
-    public UserMessage(){
+
+    public UserMessage() {
 
     }
-    public String getGroupName(){
+
+    public String getGroupName() {
         return groupName;
     }
-    public void  setGroupName(){
-        this.groupName=groupName;
+
+    public void setGroupName() {
+        this.groupName = groupName;
     }
-   public String getSenderId(){
-       return senderId;
-   }
-   public void  setReceiverId(){
-       this.receiverId=receiverId;
-   }
-    public String getReceiverId(){
+
+    public String getSenderId() {
+        return senderId;
+    }
+
+    public void setReceiverId() {
+        this.receiverId = receiverId;
+    }
+
+    public String getReceiverId() {
         return receiverId;
     }
-    public void  setSenderId(){
-        this.senderId=senderId;
+
+    public void setSenderId() {
+        this.senderId = senderId;
     }
-    public void setMessage(){
-        this.message=message;
+
+    public void setMessage() {
+        this.message = message;
     }
 
     public String getMessage() {
@@ -58,6 +63,7 @@ public class UserMessage {
     public String getMessageTime() {
         return messageTime;
     }
+
     public void setMessageTime(String messageTime) {
         this.messageTime = messageTime;
     }
