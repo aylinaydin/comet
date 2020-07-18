@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -71,7 +72,7 @@ public class MainActivity extends Activity {
     protected void onStart() {
         super.onStart();
         //adapter.startListening();
-        Button sign_button = findViewById(R.id.signup_button);
+        TextView sign_button = findViewById(R.id.sign_up_text_button);
         sign_button.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -81,9 +82,9 @@ public class MainActivity extends Activity {
 
             }
         });
-        Button login_button = findViewById(R.id.login_ok_button);
-        final EditText email_editText = findViewById(R.id.editText2);//
-        final EditText password_editText = findViewById(R.id.editText3);
+        Button login_button = findViewById(R.id.login_button);
+        final EditText email_editText = findViewById(R.id.email_input);//
+        final EditText password_editText = findViewById(R.id.password_input);
         login_button.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -137,7 +138,7 @@ public class MainActivity extends Activity {
             }
 
         });
-        Button reset_password = findViewById(R.id.resetPassword);
+        TextView reset_password = findViewById(R.id.reset_password_text_button);
         reset_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

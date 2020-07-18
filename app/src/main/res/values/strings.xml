@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">COMET</string>
     <string name="log_in_">LOG-IN</string>
-    <string name="e_mail">E-mail:</string>
-    <string name="password">Password:</string>
+    <string name="e_mail">E-mail</string>
+    <string name="password">Password</string>
     <string name="register">Register</string>
     <string name="ok">OK</string>
-    <string name="in_order_to_register_to_application">In order to register to application:</string>
+    <string name="sign_up_message">Sign up to COMET</string>
     <string name="sign_in">SIGN IN</string>
     <string name="signin">SIGN_IN</string>
     <string name="log_in">LOG-IN</string>
@@ -33,9 +33,8 @@
     <string name="textview_membername">TextView</string>
     <string name="name_group">name</string>
     <string name="reset_password">Reset Password</string>
-    <string name="if_you_forgot_your_password">If you forgot your password:</string>
     <string name="members_">Members</string>
     <string name="memberName">TextView</string>
-
-
+    <string name="separator">⬤</string>
+    <string name="launch_logo_description">Launch Logo</string>
 </resources>
