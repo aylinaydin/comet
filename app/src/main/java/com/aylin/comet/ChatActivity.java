@@ -83,7 +83,7 @@ public class ChatActivity extends AppCompatActivity {
         }
         groupName = getIntent().getStringExtra("GROUP_NAME");
         setContentView(R.layout.activity_message_list);
-        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = findViewById(R.id.app_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setTitle(groupName);
         //initialize the views
