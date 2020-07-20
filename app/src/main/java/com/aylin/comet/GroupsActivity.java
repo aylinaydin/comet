@@ -80,7 +80,7 @@ public class GroupsActivity extends AppCompatActivity {
                 final EditText groupName = promptsView
                         .findViewById(R.id.group_name);
                 final EditText groupKey = promptsView
-                        .findViewById(R.id.groupKey);
+                        .findViewById(R.id.group_key);
                 alertDialogBuilder
                         .setCancelable(false)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {

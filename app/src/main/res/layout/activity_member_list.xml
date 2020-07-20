@@ -13,20 +13,20 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         tools:targetApi="lollipop" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/membersRecyclerView"
-        android:layout_width="368dp"
-        android:layout_height="495dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_member_list" />
 
 
 </android.support.constraint.ConstraintLayout>
