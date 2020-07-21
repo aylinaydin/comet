@@ -96,7 +96,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         public ViewHolder(View itemView) {
             super(itemView);
             layout = itemView;
-            groupNameTxtV = itemView.findViewById(R.id.groupName);
+            groupNameTxtV = itemView.findViewById(R.id.group_name);
         }
     }
 }

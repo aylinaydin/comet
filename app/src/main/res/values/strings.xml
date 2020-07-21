@@ -14,20 +14,19 @@
     <string name="name">Name</string>
     <string name="username">Username</string>
     <string name="create_group">CREATE GROUP</string>
-    <string name="enter_group_name">Enter group name:</string>
+    <string name="group_name_hint">Group name</string>
     <string name="enter_group_key">Enter group key:</string>
-    <string name="creating_group">CREATING GROUP</string>
+    <string name="create_new_group">Create New Group</string>
     <string name="ok_group">OK</string>
     <string name="enter_course_key">ENTER COURSE KEY</string>
-    <string name="registeration_to_course">REGISTERATION TO COURSE</string>
-    <string name="group_key_member">Group Key:</string>
-    <string name="delete_group">DELETE GROUP</string>
+    <string name="enter_group_key_message">Enter provided group key</string>
+    <string name="delete_group">Delete Group</string>
     <string name="textview">TextView</string>
     <string name="group_key">Group Key:</string>
     <string name="logut">LOGUT</string>
     <string name="textview_confirmation">TextView</string>
     <string name="leave_group">Leave Group</string>
-    <string name="enter_group_key_">Enter Group Key</string>
+    <string name="add_new_group">Add New Group</string>
     <string name="members">Members</string>
     <string name="username_memberlist">Username</string>
     <string name="textview_membername">TextView</string>
@@ -37,4 +36,9 @@
     <string name="memberName">TextView</string>
     <string name="separator">⬤</string>
     <string name="launch_logo_description">Launch Logo</string>
+    <string name="group_logo_description">Group logo description</string>
+    <string name="group_key_hint">Group Key</string>
+    <string name="enter_message_hint">Type your message...</string>
+    <string name="gallery_button_description">Gallery Button</string>
+    <string name="send_message_button_description">Send message button</string>
 </resources>

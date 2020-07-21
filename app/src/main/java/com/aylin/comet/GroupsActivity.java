@@ -49,7 +49,7 @@ public class GroupsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_groups);
-        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = findViewById(R.id.app_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setTitle("GROUPS");
         mGroupsReference = FirebaseDatabase.getInstance().getReference().child("Groups");
@@ -78,9 +78,9 @@ public class GroupsActivity extends AppCompatActivity {
                 alertDialogBuilder.setView(promptsView);
 
                 final EditText groupName = promptsView
-                        .findViewById(R.id.groupName);
+                        .findViewById(R.id.group_name);
                 final EditText groupKey = promptsView
-                        .findViewById(R.id.groupKey);
+                        .findViewById(R.id.group_key);
                 alertDialogBuilder
                         .setCancelable(false)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {

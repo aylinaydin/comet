@@ -51,9 +51,9 @@ public class MemberGroupsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member_groups);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = findViewById(R.id.app_toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setTitle("GROUPS");
+        getSupportActionBar().setTitle("COMET");
         //getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.cardview_shadow_end_color)));
         mUsersReference = FirebaseDatabase.getInstance().getReference().child("Users");
         deneme = FirebaseDatabase.getInstance().getReference();
@@ -63,13 +63,13 @@ public class MemberGroupsActivity extends AppCompatActivity {
         GroupNewReference = FirebaseDatabase.getInstance().getReference().child("Groups");
         //mUsersReference = FirebaseDatabase.getInstance().getReference().child("Users");
         //initialize the recyclerview variables
-        mRecyclerView = (RecyclerView) findViewById(R.id.memberUsersRecyclerView);
+        mRecyclerView = (RecyclerView) findViewById(R.id.group_list);
         mRecyclerView.setHasFixedSize(true);
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         //queryGroupsAndAddThemToList();
-        memberGroup = findViewById(R.id.member_group_button);
+        memberGroup = findViewById(R.id.add_new_group_button);
 
         memberGroup.setOnClickListener(new View.OnClickListener() {
 
@@ -87,7 +87,7 @@ public class MemberGroupsActivity extends AppCompatActivity {
                 alertDialogBuilder.setView(promptsView);
 
                 final EditText groupKey = promptsView
-                        .findViewById(R.id.group_member_key);
+                        .findViewById(R.id.group_key);
                 alertDialogBuilder.setCancelable(false);
                 alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
