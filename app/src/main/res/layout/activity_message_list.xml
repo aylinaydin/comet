@@ -22,6 +22,7 @@
         android:id="@+id/messages_recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/gallery_image_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,38 +33,46 @@
         android:id="@+id/gallery_image_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@android:drawable/btn_default_small"
         android:backgroundTint="@color/fui_transparent"
+        android:contentDescription="@string/gallery_button_description"
         android:src="@android:drawable/ic_menu_gallery"
         app:layout_constraintBottom_toBottomOf="@+id/message_edit_text"
         app:layout_constraintEnd_toStartOf="@+id/send_message_image_button"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/message_edit_text"
-        android:contentDescription="@string/gallery_button_description" />
+        app:layout_constraintTop_toTopOf="@+id/message_edit_text" />
 
     <EditText
         android:id="@+id/message_edit_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:backgroundTint="@color/colorPrimary"
+        android:forceDarkAllowed="false"
         android:hint="@string/enter_message_hint"
         android:inputType="textLongMessage"
+        android:textIsSelectable="true"
+        android:theme="@style/CustomsSelectHandle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/gallery_image_button"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        android:autofillHints="" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/send_message_image_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@android:drawable/btn_default_small"
         android:backgroundTint="@color/fui_transparent"
+        android:contentDescription="@string/send_message_button_description"
         android:src="@android:drawable/ic_menu_send"
         app:layout_constraintBottom_toBottomOf="@+id/gallery_image_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/gallery_image_button"
-        android:contentDescription="@string/send_message_button_description" />
+        app:layout_constraintStart_toEndOf="@+id/gallery_image_button" />
 
 
 </android.support.constraint.ConstraintLayout>
