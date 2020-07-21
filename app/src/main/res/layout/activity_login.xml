@@ -19,6 +19,7 @@
         android:textAllCaps="false"
         android:textColorHighlight="@color/colorPrimaryDark"
         android:textColorLink="@color/colorPrimary"
+        android:backgroundTint="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/password_input"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintHorizontal_bias="0.5"
@@ -49,6 +50,7 @@
         android:id="@+id/login_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:background="@color/colorPrimary"
         android:text="@string/log_in"
         android:textColor="?android:attr/textColorPrimaryInverse"
@@ -128,19 +130,19 @@
     <ImageView
         android:id="@+id/launch_logo"
         android:layout_width="0dp"
-        android:layout_height="178dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/launch_logo_description"
         android:src="@drawable/app_launch_logo"
         app:layout_constraintBottom_toTopOf="@+id/guideline_middle"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="@+id/guideline_top"
-        android:contentDescription="@string/launch_logo_description" />
+        app:layout_constraintTop_toTopOf="@+id/guideline_top" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.14" />
+        app:layout_constraintGuide_percent="0.13953489" />
 
 </android.support.constraint.ConstraintLayout>

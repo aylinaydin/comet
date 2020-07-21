@@ -12,7 +12,7 @@
     <string name="sign_up">SIGN UP</string>
     <string name="log_in_first">LOG IN</string>
     <string name="name">Name</string>
-    <string name="username">Username:</string>
+    <string name="username">Username</string>
     <string name="create_group">CREATE GROUP</string>
     <string name="group_name_hint">Group name</string>
     <string name="enter_group_key">Enter group key:</string>

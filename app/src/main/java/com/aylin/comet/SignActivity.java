@@ -35,12 +35,12 @@ public class SignActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(activity_signin);
-        final EditText editText2 = findViewById(R.id.email_editText);
+        final EditText editText2 = findViewById(R.id.email_input);
 
-        final EditText editText3 = findViewById(R.id.password_editText);
+        final EditText editText3 = findViewById(R.id.password_input);
 
-        final EditText editText4 = findViewById(R.id.username_editText);
-        Button signUpButton = findViewById(R.id.button4);
+        final EditText editText4 = findViewById(R.id.username_input);
+        Button signUpButton = findViewById(R.id.register_button);
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
