@@ -1,56 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context="com.aylin.comet.MainActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/app_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/messagesRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/app_toolbar"
-        android:layout_marginBottom="60dp" />
+        android:id="@+id/messages_recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/gallery_image_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_toolbar" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+
+    <ImageButton
+        android:id="@+id/gallery_image_button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:weightSum="4">
+        android:backgroundTint="@color/fui_transparent"
+        android:src="@android:drawable/ic_menu_gallery"
+        app:layout_constraintBottom_toBottomOf="@+id/message_edit_text"
+        app:layout_constraintEnd_toStartOf="@+id/send_message_image_button"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/message_edit_text"
+        android:contentDescription="@string/gallery_button_description" />
 
-        <ImageButton
-            android:id="@+id/galleryImageButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@android:drawable/ic_menu_gallery" />
+    <EditText
+        android:id="@+id/message_edit_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_message_hint"
+        android:inputType="textLongMessage"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/gallery_image_button"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        android:autofillHints="" />
 
-        <EditText
-            android:id="@+id/messageEditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:hint="Enter message..." />
+    <ImageButton
+        android:id="@+id/send_message_image_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/fui_transparent"
+        android:src="@android:drawable/ic_menu_send"
+        app:layout_constraintBottom_toBottomOf="@+id/gallery_image_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/gallery_image_button"
+        android:contentDescription="@string/send_message_button_description" />
 
-        <ImageButton
-            android:id="@+id/sendMessageImagebutton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@android:drawable/ic_menu_send" />
 
-    </LinearLayout>
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

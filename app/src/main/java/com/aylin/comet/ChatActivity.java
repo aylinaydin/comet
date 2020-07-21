@@ -89,10 +89,10 @@ public class ChatActivity extends AppCompatActivity {
         //initialize the views
         //Add to Activity
 
-        mChatsRecyclerView = findViewById(R.id.messagesRecyclerView);
-        mMessageEditText = findViewById(R.id.messageEditText);
-        mSendImageButton = findViewById(R.id.sendMessageImagebutton);
-        galleryImageButton = findViewById(R.id.galleryImageButton);
+        mChatsRecyclerView = findViewById(R.id.messages_recycler_view);
+        mMessageEditText = findViewById(R.id.message_edit_text);
+        mSendImageButton = findViewById(R.id.send_message_image_button);
+        galleryImageButton = findViewById(R.id.gallery_image_button);
         mChatsRecyclerView.setHasFixedSize(true);
         //get group id from intent
 

@@ -38,4 +38,7 @@
     <string name="launch_logo_description">Launch Logo</string>
     <string name="group_logo_description">Group logo description</string>
     <string name="group_key_hint">Group Key</string>
+    <string name="enter_message_hint">Type your message...</string>
+    <string name="gallery_button_description">Gallery Button</string>
+    <string name="send_message_button_description">Send message button</string>
 </resources>
