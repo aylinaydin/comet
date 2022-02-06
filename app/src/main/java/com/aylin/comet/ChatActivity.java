@@ -83,16 +83,16 @@ public class ChatActivity extends AppCompatActivity {
         }
         groupName = getIntent().getStringExtra("GROUP_NAME");
         setContentView(R.layout.activity_message_list);
-        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = findViewById(R.id.app_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setTitle(groupName);
         //initialize the views
         //Add to Activity
 
-        mChatsRecyclerView = findViewById(R.id.messagesRecyclerView);
-        mMessageEditText = findViewById(R.id.messageEditText);
-        mSendImageButton = findViewById(R.id.sendMessageImagebutton);
-        galleryImageButton = findViewById(R.id.galleryImageButton);
+        mChatsRecyclerView = findViewById(R.id.messages_recycler_view);
+        mMessageEditText = findViewById(R.id.message_edit_text);
+        mSendImageButton = findViewById(R.id.send_message_image_button);
+        galleryImageButton = findViewById(R.id.gallery_image_button);
         mChatsRecyclerView.setHasFixedSize(true);
         //get group id from intent
 
